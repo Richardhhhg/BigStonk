@@ -19,9 +19,9 @@ class fundamental_analysis:
     - PERSONAL_SENTIMENT_WEIGHT: how much personal sentiment is weighted in net sentiment
     """
     ticker_list: list[yf.Ticker]
-    analyst_sentiment: dict[yf.Ticker: float]
-    personal_sentiment: dict[yf.Ticker: float]
-    net_sentiment: dict[yf.Ticker: float]
+    analyst_sentiment: dict[yf.Ticker, float]
+    personal_sentiment: dict[yf.Ticker, float]
+    net_sentiment: dict[yf.Ticker, float]
 
     ANALYST_SENTIMENT_WEIGHT = 0.4
     PERSONAL_SENTIMENT_WEIGHT = 0.6
@@ -37,10 +37,11 @@ class fundamental_analysis:
         
         Should return each tick wither their analyst, personal, and net sentiment scores
         """
+        # TODO: Check whether or not representation correct with the \
         res = "Ticker: Analyst Sentiment/Personal Sentiment/Net Sentiment"
-        for ticker in self.ticker_list:
-            res += f'\n{ticker.info['symbol']}: {self.analyst_sentiment[ticker]}/ 
-                    {self.personal_sentiment[ticker]}/ {self.net_sentiment[ticker]}'
+        res += "\n".join([f"{ticker.info['symbol']}: {self.analyst_sentiment[ticker]} \
+                          /{self.personal_sentiment[ticker]}/ {self.net_sentiment[ticker]}" \
+                          for ticker in self.ticker_list])
         return res
 
     def get_tickers(self) -> None:
@@ -48,11 +49,11 @@ class fundamental_analysis:
         """
         ticker = None
         while ticker.lower() != 'no':
-            try: # assuming input string
+            try:  # assuming input string
                 ticker = input("Enter a ticker or Type 'No' to stop")
                 t = yf.Ticker(ticker)
                 if t not in self.ticker_list:
-                    self.ticker_list.append(t) # Check if typing no breaks it
+                    self.ticker_list.append(t)  # Check if typing no breaks it
             except:
                 print("Please enter a valid ticker")
     
@@ -74,19 +75,28 @@ class fundamental_analysis:
             analyst_scores = ticker.get_recommendations()
 
     def set_personal_sentiment(self) -> None:
-        """Goes through some more relevant information on yfinance and somehow scores that using math
+        """Goes through some more relevant information on yfinance 
+        and somehow scores that using math
         """
+        # TODO: IMPLEMENT THIS
         pass
 
     def set_net_sentiment(self) -> None:
         """ For each ticker, weights analyst and personal sentiments
         """
         for ticker in self.ticker_list:
-            self.net_sentiment[ticker] = fundamental_analysis.ANALYST_SENTIMENT_WEIGHT * self.analyst_sentiment['ticker']
-            + fundamental_analysis.PERSONAL_SENTIMENT_WEIGHT * self.personal_sentiment['ticker']
+            self.net_sentiment[ticker] = fundamental_analysis.ANALYST_SENTIMENT_WEIGHT \
+            * self.analyst_sentiment['ticker'] + fundamental_analysis.PERSONAL_SENTIMENT_WEIGHT \
+            * self.personal_sentiment['ticker']
         
 
-
+if __name__ == '__main__':
+    import python_ta
+    
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'disable': ['possibly-undefined']
+    })
 
 
 
