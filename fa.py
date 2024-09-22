@@ -28,7 +28,7 @@ class fundamental_analysis:
     ticker_list: list[yf.Ticker]
     analyst_sentiment: dict[yf.Ticker, float]
     personal_sentiment: dict[yf.Ticker, float]
-    net_sentiment: dict[yf.Ticker, float]
+    net_sentiment: dict[str, float]
 
     ANALYST_SENTIMENT_WEIGHT = 0.4
     PERSONAL_SENTIMENT_WEIGHT = 0.6
@@ -111,16 +111,16 @@ class fundamental_analysis:
         """ For each ticker, weights analyst and personal sentiments
         """
         for ticker in self.ticker_list:
-            self.net_sentiment[ticker] = fundamental_analysis.ANALYST_SENTIMENT_WEIGHT \
-            * self.analyst_sentiment['ticker'] + fundamental_analysis.PERSONAL_SENTIMENT_WEIGHT \
-            * self.personal_sentiment['ticker']
+            self.net_sentiment[ticker.info['symbol']] = fundamental_analysis.ANALYST_SENTIMENT_WEIGHT \
+            * self.analyst_sentiment[ticker] + fundamental_analysis.PERSONAL_SENTIMENT_WEIGHT \
+            * self.personal_sentiment[ticker]
     
     def create_dataframe(self) -> pd.DataFrame:
         """Turns data stored inside to a pandas dataframe for future use
         """
         df = pd.DataFrame(columns=['Ticker', 'NetSentScore'])
-        for ticker, score in self.net_sentiment.items():
-            pass
+        df['Ticker'] = self.net_sentiment.keys()
+        df['NetSentScore'] = self.net_sentiment.values()
         return df
 
 if __name__ == '__main__':
