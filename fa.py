@@ -130,9 +130,3 @@ if __name__ == '__main__':
         'max-line-length': 100,
         'disable': ['possibly-undefined']
     })
-
-
-
-        
-            
-
