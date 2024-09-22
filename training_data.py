@@ -13,3 +13,5 @@ if __name__ == '__main__':
     fa.set_analyst_sentiment()
     fa.set_personal_sentiment()
     fa.set_net_sentiment()
+    df = fa.create_dataframe()
+    results = []
