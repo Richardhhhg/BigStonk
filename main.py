@@ -3,12 +3,14 @@ import yfinance as yf
 
 def get_tickers() -> list[yf.Ticker]:
     """ Gets input for list of tickers
+
+    ***************Obsolete*************************
     """
     ticker_list = []
-    ticker = None
+    ticker = 'Mungies'
     while ticker.lower() != 'no':
         try:  # assuming input string
-            ticker = input("Enter a ticker or Type 'No' to stop")
+            ticker = input("Enter a ticker or Type 'No' to stop ")
             t = yf.Ticker(ticker)
             if t not in ticker_list:
                 ticker_list.append(t)  # Check if typing no breaks it

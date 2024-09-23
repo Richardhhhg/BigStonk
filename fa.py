@@ -94,6 +94,7 @@ class fundamental_analysis:
                 analyst_scores['count'] = analyst_scores.sum(axis = 1, numeric_only= True)
                 ticker_sent += self._set_analyst_scores(i, analyst_scores)
                 score_count += analyst_scores.loc[i, 'count']
+            # TODO: WHY THE FUCK IS THIS SHIT BREAKING
             ticker_sent /= scores_count
             self.analyst_sentiment[ticker] = ticker_sent
             total_sentiment += ticker_sent
