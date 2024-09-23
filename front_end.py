@@ -1,8 +1,6 @@
-import streamlit as st
 # run using "streamlit run front_end.py"
 from fa import fundamental_analysis
 import yfinance as yf
-
 import streamlit as st
 import yfinance as yf
 
@@ -31,10 +29,13 @@ def get_tickers() -> list[yf.Ticker]:
         
         try:
             # Append user input to session state lists
+            # TODO: MAKE THE EXCEPT THING ACTUALLY WORK
+            # yfinance does not check whether or not ticker exists right away
+            # Need to do something like ticker.hist(5y)
             st.session_state.ticker_list_str.append(user_input)
             t = yf.Ticker(user_input)
             st.session_state.ticker_list.append(t)
-        except ValueError: # yfinance does not check whether or not ticker exists right away
+        except ValueError: 
             st.write("Enter a valid Ticker NERD")
     
 
