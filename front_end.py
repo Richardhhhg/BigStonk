@@ -1,5 +1,6 @@
 # run using "streamlit run front_end.py"
 from fa import fundamental_analysis
+from mv_opt import mean_var_optimizer
 import yfinance as yf
 import streamlit as st
 import yfinance as yf
@@ -34,8 +35,9 @@ def get_tickers() -> list[yf.Ticker]:
             # Need to do something like ticker.hist(5y)
             st.session_state.ticker_list_str.append(user_input)
             t = yf.Ticker(user_input)
+            t.history('1d')  # testing to make sure ticker is valid
             st.session_state.ticker_list.append(t)
-        except ValueError: 
+        except: 
             st.write("Enter a valid Ticker NERD")
     
 
@@ -48,6 +50,11 @@ if __name__ == '__main__':
     if ticker_list:
         fa.set_tickers_from_list(ticker_list)
         fa.set_analyst_sentiment()
-        fa.set_personal_sentiment()
-        fa.set_net_sentiment()
-        st.write(fa)
+        # fa.set_personal_sentiment()
+        # fa.set_net_sentiment()
+        # st.write(fa)
+        ticker_list = fa.get_tickers_as_str()
+        mvo = mean_var_optimizer(ticker_list)
+        mvo.set_ticker_prices()
+        mvo.optimal_portfolio()
+        st.write(mvo)

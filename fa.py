@@ -39,16 +39,12 @@ class fundamental_analysis:
         self.analyst_sentiment = {}
         self.personal_sentiment = {}
         self.net_sentiment = {}
-        self.portfolio_analyst_sent = 0.0
-        self.portfolio_personal_sent = 0.0
-        self.protfolio_net_sent = 0.0
 
-    def __str__(self) -> None:
+    def __str__(self) -> str:
         """String representation of the fundamental analysis for a given portfolio
         
         Should return each tick wither their analyst, personal, and net sentiment scores
         """
-        # TODO: Check whether or not representation correct with the \
         res = "Ticker: Analyst Sentiment/Personal Sentiment/Net Sentiment"
         res += "\n".join([f"{ticker.info['symbol']}: {self.analyst_sentiment[ticker]} \
                           /{self.personal_sentiment[ticker]}/ {self.net_sentiment[ticker]}" \
@@ -122,6 +118,11 @@ class fundamental_analysis:
         df['Ticker'] = self.net_sentiment.keys()
         df['NetSentScore'] = self.net_sentiment.values()
         return df
+    
+    def get_tickers_as_str(self) -> list:
+        """ Returns a list of all tickers in portfolio
+        """
+        return [ticker.info['symbol'] for ticker in self.ticker_list]
 
 if __name__ == '__main__':
     import python_ta
