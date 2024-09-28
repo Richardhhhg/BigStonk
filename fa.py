@@ -15,9 +15,7 @@ class fundamental_analysis:
     - analyst_sentiment: How analysts feel about the tragectory of the stonk, meant to refelct market sentiment
     - personal_sentiment: How our methods feel about tragectory of the stonk
     - net_sentiment: The weighted sentiment score for each stonk
-    - portfolio_analyst_sent: total analyst sentiment for the portfolio
-    - portfolio_personal_sent: total personal sentiment for the portfolio
-    - portfolio_net_sent: total net sentiment for the portfolio
+    - ticker_str: List with string of ticker names
 
     Constants:
     - ANALYST_SENTIMENT_WEIGHT: how much analyst sentiment is weighted in net sentiment
@@ -29,6 +27,7 @@ class fundamental_analysis:
     analyst_sentiment: dict[yf.Ticker, float]
     personal_sentiment: dict[yf.Ticker, float]
     net_sentiment: dict[str, float]
+    ticker_str: list[str]
 
     ANALYST_SENTIMENT_WEIGHT = 0.4
     PERSONAL_SENTIMENT_WEIGHT = 0.6
@@ -39,6 +38,7 @@ class fundamental_analysis:
         self.analyst_sentiment = {}
         self.personal_sentiment = {}
         self.net_sentiment = {}
+        self.ticker_str = []
 
     def __str__(self) -> str:
         """String representation of the fundamental analysis for a given portfolio
