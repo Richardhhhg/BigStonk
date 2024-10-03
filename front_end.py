@@ -33,8 +33,9 @@ def get_tickers() -> tuple[dict, list, str]:
             st.error("Please input ticker, expected return, and confidence")
 
     # Display the dictionary of saved stock data
-    st.write("Current stock data:")
+    st.write("Current Stocks and Expected Returns:")
     st.write(st.session_state.ticker_dict)
+    st.write("All Stonks")
     st.write(st.session_state.ticker_list)
 
     # ending the inputs
@@ -44,9 +45,9 @@ def get_tickers() -> tuple[dict, list, str]:
     return st.session_state.ticker_list, st.session_state.ticker_dict, st.session_state.status
 
 if __name__ == '__main__':
-    fa = fundamental_analysis()
+    # fa = fundamental_analysis()
 
-    st.title('BIG STONKS GO BONK')
+    st.title('Mean Variance Optimization!')
     ticker_list, ticker_dict, status = get_tickers()
 
     if status == "ON":
