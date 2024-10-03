@@ -1,12 +1,8 @@
-# TODO:
-# 1. Build Thing to get tickers
-# 2. Build method to go through tickers and analyze market sentiment via analyst ratings
-# 3. Build method to get personal sentiment using other available data (Consult Finance Bros)
 import yfinance as yf
 import pandas as pd
 import numpy as np
 
-
+####################### THIS FILE IS NOW OBSELETE AND WILL BE ARCHIVED ##########################################
 class fundamental_analysis:
     """ An object that allows the fundamental analysis of stonks
 

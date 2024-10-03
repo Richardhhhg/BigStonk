@@ -19,14 +19,15 @@ class mean_var_optimizer:
     # expected_returns: OrderedDict
     # covar_mat: idk
     # portfolio_stats: tuple
+    RISK_FREE_RATE = 0.02
 
-
-    def __init__(self, ticker_list: list[str]) -> None:
+    def __init__(self, ticker_list, ticker_dict) -> None:
         self.ticker_list = ticker_list
-        self.ticker_prices = None
+        self.ticker_dict = ticker_dict
+        self.ticker_prices_capm = None
         self.optimal_weights = None
-        self.expected_returns = None
-        self.covar_mat = None
+        self.expected_returns_capm = None
+        self.covar_mat_capm = None
         self.portfolio_stats = None
 
     def __str__(self) -> str:
@@ -68,8 +69,9 @@ class mean_var_optimizer:
         is for later
         WARNING: THIS MAY SET WEIGHTS TO 0
         """
-        ef = opt.CLA(self.expected_returns, self.covar_mat)
-        ef.max_sharpe()
+        ef = opt.EfficientFrontier(self.expected_returns_capm, self.covar_mat_capm, weight_bounds = (-1, 1))
+        ef.add_objective(opt.objective_functions.L2_reg, gamma = 1)
+        ef.max_sharpe(risk_free_rate = mean_var_optimizer.RISK_FREE_RATE)
         self.optimal_weights = ef.clean_weights()
         self.portfolio_stats = ef.portfolio_performance(verbose = False)
 
@@ -77,8 +79,12 @@ class mean_var_optimizer:
         """ Initializes a lot of stuff outside of the Initializer 
         Purely for asthetic purposes
         """
-        ohlc = yf.download(self.ticker_list, period = "1y")
-        self.ticker_prices = ohlc["Adj Close"].dropna(how = "all")
-        self.expected_returns = opt.expected_returns.capm_return(self.ticker_prices)
-        self.covar_mat = opt.risk_models.CovarianceShrinkage(self.ticker_prices).ledoit_wolf()
+        # thigns without expected returns
+        ohlc_capm = yf.download(self.ticker_list, period = "3y")
+        self.ticker_prices_capm = ohlc_capm["Adj Close"].dropna(how = "all")
+        self.expected_returns_capm = opt.expected_returns.capm_return(self.ticker_prices_capm)
+        # overriding with data with prior expected returns
+        for ticker, prior in self.ticker_dict.items():
+            self.expected_returns_capm[ticker] = prior
+        self.covar_mat_capm = opt.risk_models.CovarianceShrinkage(self.ticker_prices_capm).ledoit_wolf()
     
