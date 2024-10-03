@@ -80,5 +80,6 @@ class mean_var_optimizer:
         # overriding with data with prior expected returns
         for ticker, prior in self.ticker_dict.items():
             self.expected_returns_capm[ticker] = prior
+        # print(self.expected_returns_capm)
         self.covar_mat_capm = opt.risk_models.CovarianceShrinkage(self.ticker_prices_capm).ledoit_wolf()
     
