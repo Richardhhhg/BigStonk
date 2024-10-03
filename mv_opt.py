@@ -62,12 +62,6 @@ class mean_var_optimizer:
 
     def optimal_portfolio(self) -> None:
         """ Creates the portfolio that Minimizes Risk for a Given Return
-
-        This uses Critical Line Algorithm, Essentially finds the market Portfolio
-        Not using any other algorithm that would adjust for risk and return is
-        mostly due to the idea that balancing the market portfolio and fixed assets
-        is for later
-        WARNING: THIS MAY SET WEIGHTS TO 0
         """
         ef = opt.EfficientFrontier(self.expected_returns_capm, self.covar_mat_capm, weight_bounds = (-1, 1))
         ef.add_objective(opt.objective_functions.L2_reg, gamma = 1)
